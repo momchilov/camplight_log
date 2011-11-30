@@ -8,9 +8,9 @@ rsync = open('rsync.yml') {|f| YAML.load(f) }
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
-ssh_user       = rsync['ssh']['user']
-ssh_port       = rsync['ssh']['port']
-document_root  = rsync['ssh']['document_root']
+ssh_user       = rsync['user']
+ssh_port       = rsync['port']
+document_root  = rsync['document_root']
 deploy_default = "rsync"
 
 # This will be configured for you when you run config_deploy
@@ -224,8 +224,8 @@ end
 
 desc "Deploy website via rsync"
 task :rsync do
-  puts "## Deploying website via Rsync"
-  ok_failed system("rsync -avze 'ssh -p #{ssh_port}' --delete #{public_dir}/ #{ssh_user}:#{document_root}")
+    puts "## Deploying website via Rsync"
+    ok_failed system("rsync -axvzco 'ssh -p #{ssh_port}' --delete #{public_dir}/ #{ssh_user}:#{document_root} --progress ")
 end
 
 desc "deploy public directory to github pages"

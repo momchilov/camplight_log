@@ -1,12 +1,16 @@
 require "rubygems"
 require "bundler/setup"
 require "stringex"
+require 'yaml'
+
+YAML::ENGINE.yamler = 'syck'
+rsync = open('rsync.yml') {|f| YAML.load(f) }
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
-ssh_user       = "user@domain.com"
-ssh_port       = "22"
-document_root  = "~/website.com/"
+ssh_user       = rsync['ssh']['user']
+ssh_port       = rsync['ssh']['port']
+document_root  = rsync['ssh']['document_root']
 deploy_default = "rsync"
 
 # This will be configured for you when you run config_deploy
